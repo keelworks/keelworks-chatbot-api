@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from .model import get_best_answer, faqs, faq_embeddings
 
 app = FastAPI()
 
@@ -13,5 +14,8 @@ def home():
 @app.post("/ask")
 def ask_question(query: Query):
     user_query = query.query
-    answer = "This is a placeholder response."
+    answer = get_best_answer(user_query, faqs, faq_embeddings)
     return {"question": user_query, "answer": answer}
+
+# To start the server:
+# uvicorn app.main:app --host 0.0.0.0 --port 80
