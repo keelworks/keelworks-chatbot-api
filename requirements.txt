@@ -1,3 +1,9 @@
 fastapi==0.111.1
+nltk==3.8.1
+numpy<2.0
 pydantic==2.8.2
+scikit-learn==1.5.1
+sentence-transformers==3.0.1
+torch==2.2.2
+transformers==4.43.3
 uvicorn==0.30.4
