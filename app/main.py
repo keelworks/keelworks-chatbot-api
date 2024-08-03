@@ -19,3 +19,6 @@ def ask_question(query: Query):
 
 # To start the server:
 # uvicorn app.main:app --host 0.0.0.0 --port 80
+
+# Before running server, make sure there is a saved chatbot_model in model/
+# To save a chatbot_model, run scripts/save_model.py
