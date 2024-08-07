@@ -1,12 +1,12 @@
 import re
+from sentence_transformers import SentenceTransformer
 from nltk.stem import PorterStemmer, WordNetLemmatizer
 from nltk.tokenize import word_tokenize
-from sentence_transformers import SentenceTransformer
 
-# Initialize stemmer, lemmatizer, and model
+# Initialize model, stemmer, and lemmatizer
+model = SentenceTransformer('all-MiniLM-L6-v2')
 stemmer = PorterStemmer()
 lemmatizer = WordNetLemmatizer()
-model = SentenceTransformer('all-MiniLM-L6-v2')
 
 # Preprocess text (tokenization, stemming, lemmatization, and lowercasing)
 def preprocess_text(text):
