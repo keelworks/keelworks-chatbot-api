@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from .model import get_best_answer
+from .chatbot import get_best_answer
 
 app = FastAPI()
 

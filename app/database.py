@@ -2,6 +2,7 @@ import os
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker
 from databases import Database
+from sqlalchemy.ext.declarative import declarative_base
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -20,13 +21,14 @@ engine = create_engine(DATABASE_URL)
 metadata = MetaData()
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Databases setup
+# Databases setup for async operations
 database = Database(DATABASE_URL)
 
 async def connect_db():
-    """Connect to the database."""
     await database.connect()
 
 async def disconnect_db():
-    """Disconnect from the database."""
     await database.disconnect()
+
+# Create Base class for database models
+Base = declarative_base()
