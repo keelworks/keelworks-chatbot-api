@@ -1,15 +1,18 @@
 from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional
 
-class UnansweredQuestionBase(BaseModel):
+class Query(BaseModel):
+    query: str
+
+class UnansweredQuestionCreate(BaseModel):
     question: str
 
-class UnansweredQuestionCreate(UnansweredQuestionBase):
-    pass
-
-class UnansweredQuestion(UnansweredQuestionBase):
-    id: int
-    created_at: datetime
+class UnansweredQuestion(BaseModel):
+    id: Optional[int] = None
+    created_at: Optional[datetime] = None
+    question: str
+    answer: Optional[str] = None
 
     class Config:
-        orm_mode = True
+        model_config = {'from_attributes': True}

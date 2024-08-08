@@ -1,7 +1,6 @@
 import os
-from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker
-from databases import Database
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.ext.declarative import declarative_base
 from dotenv import load_dotenv
 
@@ -16,19 +15,11 @@ MYSQL_DATABASE = os.getenv('MYSQL_DATABASE', 'keelworks_chatbot_db')
 
 DATABASE_URL = f"mysql+aiomysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DATABASE}"
 
-# SQLAlchemy setup
-engine = create_engine(DATABASE_URL)
-metadata = MetaData()
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# SQLAlchemy setup for async
+engine = create_async_engine(DATABASE_URL, echo=True)
+AsyncSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, class_=AsyncSession)
 
-# Databases setup for async operations
-database = Database(DATABASE_URL)
-
-async def connect_db():
-    await database.connect()
-
-async def disconnect_db():
-    await database.disconnect()
-
-# Create Base class for database models
-Base = declarative_base()
+# Dependency to get the database session
+async def get_session():
+    async with AsyncSessionLocal() as session:
+        yield session
