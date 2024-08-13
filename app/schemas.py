@@ -15,4 +15,4 @@ class UnansweredQuestion(BaseModel):
     answer: Optional[str] = None
 
     class Config:
-        model_config = {'from_attributes': True}
+        orm_mode = True
