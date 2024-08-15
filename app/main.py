@@ -19,7 +19,7 @@ async def ask_question(query: schemas.Query, db: AsyncSession = Depends(database
         response = schemas.UnansweredQuestion(question=user_query, answer=answer, id=None, created_at=None)
     else:
         created_question = await crud.create_unanswered_question(db, question=schemas.UnansweredQuestionCreate(question=user_query))
-        response = schemas.UnansweredQuestion.from_orm(created_question)
+        response = schemas.UnansweredQuestion.model_validate(created_question)
     
     return response
     

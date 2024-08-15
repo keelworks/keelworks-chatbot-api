@@ -5,7 +5,6 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
-# Use Base class to create a database model
 class UnansweredQuestion(Base):
     __tablename__ = 'unanswered_questions'
     
