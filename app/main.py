@@ -1,42 +1,37 @@
-import os
+from typing import Dict
 from fastapi import FastAPI, Depends
-from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
-from . import database, chatbot, schemas, crud
+from . import settings, database, chatbot, schemas, crud
 
 app = FastAPI()
 
-# CORS settings
-ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
-ALLOW_CREDENTIALS = os.getenv("ALLOW_CREDENTIALS", "true").lower() == "true"
-ALLOW_METHODS = os.getenv("ALLOW_METHODS", "*").split(",")
-ALLOW_HEADERS = os.getenv("ALLOW_HEADERS", "*").split(",")
+# Apply CORS middleware settings
+settings.add_cors_middleware(app)
 
-# Middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS,
-    allow_credentials=ALLOW_CREDENTIALS,
-    allow_methods=ALLOW_METHODS,
-    allow_headers=ALLOW_HEADERS,
-)
-
-# Endpoint for the initial startup message
+# Get initial start up message
 @app.get('/')
-async def home():
-    return {'message': 'Welcome to the KeelWorks Chatbot. Ask me anything about KeelWorks!'}
+async def home() -> Dict[str, str]:
+    return {'message': "Hi, I'm KeelBot. Ask me anything about KeelWorks!"}
 
-# Endpoint for user inputted question and, based on the threshold match, either returns a response using chatbot model or saves the question in a database
+# Post a question if threshold is below limit otherwise returns the answer of the best matching question
 @app.post('/ask')
-async def ask_question(query: schemas.Query, db: AsyncSession = Depends(database.get_session)):
-    user_query = query.query.strip()
+async def ask_question(
+    user_question: schemas.UnansweredQuestionCreate, 
+    db: AsyncSession = Depends(database.get_session)
+) -> schemas.UnansweredQuestion:
+    user_query = user_question.user_question.strip()
 
     answer, is_above_threshold = chatbot.get_best_answer(user_query)
 
     if is_above_threshold:
         response = schemas.UnansweredQuestion(question=user_query, answer=answer, id=None, created_at=None)
     else:
-        created_question = await crud.create_unanswered_question(db, question=schemas.UnansweredQuestionCreate(question=user_query))
+        created_question = await crud.create_unanswered_question(db, user_question=schemas.UnansweredQuestionCreate(user_question=user_query))
+        created_question.answer = (
+            "I'm sorry, I don’t have an answer for that right now. "
+            "I’ll add your question to our list of 'Unanswered Questions' and work on getting you an answer soon! "
+            "In the meantime, feel free to ask another question or rephrase your query."
+        )
         response = schemas.UnansweredQuestion.model_validate(created_question)
     
     return response
