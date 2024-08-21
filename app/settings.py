@@ -8,6 +8,7 @@ ALLOW_CREDENTIALS = os.getenv('ALLOW_CREDENTIALS', 'true').lower() == 'true'
 ALLOW_METHODS = os.getenv('ALLOW_METHODS', '*').split(',')
 ALLOW_HEADERS = os.getenv('ALLOW_HEADERS', '*').split(',')
 
+# CORS middleware settings
 def add_cors_middleware(app: FastAPI) -> None:
     app.add_middleware(
         CORSMiddleware,
