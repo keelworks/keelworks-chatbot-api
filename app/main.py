@@ -35,9 +35,3 @@ async def ask_question(
         response = schemas.UnansweredQuestion.model_validate(created_question)
     
     return response
-    
-# To start the server:
-# uvicorn app.main:app --host 0.0.0.0 --port 80
-
-# Before running server:
-# 1. Make sure there is a chatbot_model pickle file in model/: 'python -m scripts.save_model'

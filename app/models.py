@@ -14,4 +14,5 @@ class UnansweredQuestion(Base):
     question: Mapped[str] = mapped_column(String(255))
 
     def __repr__(self) -> str:
-        return f"UnansweredQuestion(id={self.id!r}, question={self.question!r}, created_at={self.created_at!r})"
+        return f'UnansweredQuestion(id={self.id!r}, question={self.question!r}, created_at={self.created_at!r})'
+    
