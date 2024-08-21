@@ -1,16 +1,13 @@
 # KeelWorks Chatbot API
 
-This is a FastAPI-based API for the KeelBot chatbot, designed to handle user queries and provide answers based on a machine learning model. The API interacts with a MySQL database to store unanswered questions.
+This repository contains the backend code for the KeelWorks chatbot built with FastAPI. It handles user queries and provide answers based on a machine learning model, which is loaded from a pickle file. The API interacts with a MySQL database to store unanswered questions.
 
 ## Getting Started
 
 ### Prerequisites
 
 - Python 3.10+
-- FastAPI
-- SQLAlchemy
 - MySQL server
-- A working pickle file for the chatbot model (see below for instructions on generating it)
 
 ### Installation
 
@@ -32,7 +29,7 @@ pip install -r requirements.txt
 python -m scripts.save_model
 ```
 
-4. Run server
+4. Run API server
 
 ```zsh
 uvicorn app.main:app --host 0.0.0.0 --port 80
@@ -42,9 +39,9 @@ The API should now be running at http://0.0.0.0:80.
 
 ## API Endpoints
 
-- GET '/': Fetches the initial message from API
-- POST '/ask': Sends the user's question and receives the response from chatbot model
+- GET '/': Fetches the initial message from API.
+- POST '/ask': Sends the user's question and receives the response from chatbot model.
 
 ## Contact
 
-For any questions or issues, please reach out to jason.park@keelworks.org
+For any questions or issues, please reach out to jason.park@keelworks.org.
