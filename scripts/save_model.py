@@ -1,26 +1,8 @@
 import os
 import json
 import pickle
-import nltk
 import numpy as np
 from utils.preprocess_and_embeddings import model, preprocess_text, get_sbert_embedding
-
-# Get the path to the virtual environment's directory
-venv_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'venv')
-
-# Set the path for nltk_data inside the virtual environment
-nltk_data_path = os.path.join(venv_dir, 'nltk_data')
-
-# Ensure the directory exists
-os.makedirs(nltk_data_path, exist_ok=True)
-
-# Set NLTK_DATA environment variable to point to this directory
-os.environ['NLTK_DATA'] = nltk_data_path
-
-# Download the required NLTK data
-nltk.download('punkt', download_dir=os.environ['NLTK_DATA'])
-nltk.download('wordnet', download_dir=os.environ['NLTK_DATA'])
-nltk.download('omw-1.4', download_dir=os.environ['NLTK_DATA'])
 
 # Load the FAQs from the JSON file
 with open('data/faqs.json', 'r') as file:

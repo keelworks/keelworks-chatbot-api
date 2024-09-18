@@ -11,7 +11,7 @@ settings.add_cors_middleware(app)
 # Get initial start up message
 @app.get('/')
 async def home() -> Dict[str, str]:
-    return {'message': "Hi, I'm KeelBot. Ask me anything about KeelWorks!"}
+    return {'message': "Ahoy! I’m Captain Keel, here to navigate all your questions about Keelworks. Ask away, and let’s set sail toward the answers you seek!"}
 
 # Post a question if threshold is below limit otherwise returns the answer of the best matching question
 @app.post('/ask')
@@ -28,9 +28,7 @@ async def ask_question(
     else:
         created_question = await crud.create_unanswered_question(db, user_question=schemas.UnansweredQuestionCreate(user_question=user_query))
         created_question.answer = (
-            "I'm sorry, I don’t have an answer for that right now. "
-            "I’ll add your question to our list of 'Unanswered Questions' and work on getting you an answer soon! "
-            "In the meantime, feel free to ask another question or rephrase your query."
+            "Hmm, looks like we’ve sailed into uncharted waters! I don’t have an answer for that right now, but I’ll hoist the sails and work on it. In the meantime, try adjusting your course with a new question!"
         )
         response = schemas.UnansweredQuestion.model_validate(created_question)
     

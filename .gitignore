@@ -1,5 +1,5 @@
-venv/
-.env
+.*
+!.gitignore
+
 __pycache__/
 model/
-.vscode

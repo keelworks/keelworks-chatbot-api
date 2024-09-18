@@ -17,19 +17,31 @@ This repository contains the backend code for the KeelWorks chatbot built with F
 git clone git@github.com:jjpark987/Entity-Extraction-Chatbot-API.git
 ```
 
-2. Install dependencies
+2. Create a virtual environment
+
+```zsh
+python -m venv .venv
+```
+
+3. Activate virtual environment
+
+```zsh
+source .venv/bin/activate
+```
+
+4. Install dependencies
 
 ```zsh
 pip install -r requirements.txt
 ```
 
-3. Generate chatbot model pickle file from root directory
+5. Generate chatbot model pickle file from root directory
 
 ```zsh
 python -m scripts.save_model
 ```
 
-4. Run API server
+6. Run API server
 
 ```zsh
 uvicorn app.main:app --host 0.0.0.0 --port 80
