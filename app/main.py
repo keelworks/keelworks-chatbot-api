@@ -1,20 +1,23 @@
 from typing import Dict
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, APIRouter
 from sqlalchemy.ext.asyncio import AsyncSession
 from . import settings, database, chatbot, schemas, crud
 
 app = FastAPI()
 
+# API router for /api/ prefix
+api_router = APIRouter()
+
 # Apply CORS middleware settings
 settings.add_cors_middleware(app)
 
 # Get initial start up message
-@app.get('/')
+@api_router.get('/')
 async def home() -> Dict[str, str]:
     return {'message': "Hi, I'm KeelBot. Ask me anything about KeelWorks!"}
 
 # Post a question if threshold is below limit otherwise returns the answer of the best matching question
-@app.post('/ask')
+@api_router.post('/ask')
 async def ask_question(
     user_question: schemas.UnansweredQuestionCreate, 
     db: AsyncSession = Depends(database.get_session)
@@ -35,3 +38,6 @@ async def ask_question(
         response = schemas.UnansweredQuestion.model_validate(created_question)
     
     return response
+
+# Include the router in the FastAPI app with a prefix
+app.include_router(api_router, prefix="/api")
