@@ -9,12 +9,12 @@ app = FastAPI()
 settings.add_cors_middleware(app)
 
 # Get initial start up message
-@app.get('/')
+@app.get("/api/")
 async def home() -> Dict[str, str]:
     return {'message': "Ahoy! I’m Captain Keel, here to navigate all your questions about Keelworks. Ask away, and let’s set sail toward the answers you seek!"}
 
 # Post a question if threshold is below limit otherwise returns the answer of the best matching question
-@app.post('/ask')
+@app.post("/api/ask")
 async def ask_question(
     user_question: schemas.UnansweredQuestionCreate, 
     db: AsyncSession = Depends(database.get_session)
