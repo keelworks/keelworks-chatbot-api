@@ -1,5 +1,6 @@
-# Use an official Python runtime as a base image
-FROM python:3.9-slim
+# Use Ubuntu base image
+FROM ubuntu:20.04
+RUN apt-get update && apt-get install -y python3
 
 # Set the working directory in the container
 WORKDIR /app
