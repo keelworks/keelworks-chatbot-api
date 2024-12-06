@@ -8,7 +8,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y git
 
 # Clone the FastAPI repository from GitHub
-RUN git clone https://github.com/jjpark987/keelworks-chatbot-api.git /app
+RUN git clone https://github.com/keelworks/keelworks-chatbot-api /app
 
 # Install Python dependencies from the cloned repository
 RUN pip install --no-cache-dir -r requirements.txt
