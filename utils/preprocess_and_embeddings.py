@@ -4,6 +4,7 @@ import nltk
 from nltk.stem import PorterStemmer, WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 from sentence_transformers import SentenceTransformer
+from typing import List
 
 # Set the NLTK data path to your virtual environment's lib directory
 nltk_data_path = os.path.join(os.path.dirname(__file__), '..', '.venv', 'lib', 'python3.12', 'site-packages', 'nltk_data')
@@ -43,6 +44,6 @@ def preprocess_text(text: str) -> str:
     return ' '.join(tokens)  # Join tokens back into a single string
 
 # Generate SBERT embeddings
-def get_sbert_embedding(text: str) -> list[float]:
+def get_sbert_embedding(text: str) -> List[float]:
     embedding = model.encode(text)
     return embedding
