@@ -1,20 +1,16 @@
-# Use Python 3.9-slim image
-FROM python:3.9-slim
+# Use Ubunti 20.04
+FROM ubuntu:20.04
 
 # Set the working directory in the container
 WORKDIR /app
 
 # Install required tools and add MySQL repository
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    wget \
-    gnupg \
-    lsb-release \
-    && wget https://dev.mysql.com/get/mysql-apt-config_0.8.26-1_all.deb \
-    && wget -qO - https://repo.mysql.com/RPM-GPG-KEY-mysql-2022 | gpg --dearmor -o /usr/share/keyrings/mysql.gpg \
-    && echo "deb [signed-by=/usr/share/keyrings/mysql.gpg] http://repo.mysql.com/apt/debian/ $(lsb_release -sc) mysql-8.0" > /etc/apt/sources.list.d/mysql.list \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends mysql-server \
-    && rm -rf /var/lib/apt/lists/* /mysql-apt-config_0.8.26-1_all.deb
+RUN apt-get update && apt-get install -y wget gnupg && \
+    wget https://dev.mysql.com/get/mysql-apt-config_0.8.26-1_all.deb && \
+    dpkg -i mysql-apt-config_0.8.26-1_all.deb && \
+    apt-get update && \
+    apt-get install -y mysql-server && \
+    rm -rf /var/lib/apt/lists/*
 
 # Clone the FastAPI repository from GitHub
 RUN apt-get install -y --no-install-recommends git && \
