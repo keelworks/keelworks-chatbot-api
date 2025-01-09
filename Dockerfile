@@ -1,26 +1,28 @@
-# Use Ubunti 20.04
+# Use Ubuntu 20.04 as the base image
 FROM ubuntu:20.04
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Install required tools and add MySQL repository
-RUN apt-get update && apt-get install -y wget gnupg && \
-    wget https://dev.mysql.com/get/mysql-apt-config_0.8.26-1_all.deb && \
-    dpkg -i mysql-apt-config_0.8.26-1_all.deb && \
-    apt-get update && \
-    apt-get install -y mysql-server && \
-    rm -rf /var/lib/apt/lists/*
+# Prevent interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install prerequisites and MySQL server
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 \
+    python3-pip \
+    git \
+    mysql-server \
+    && rm -rf /var/lib/apt/lists/*
 
 # Clone the FastAPI repository from GitHub
-RUN apt-get install -y --no-install-recommends git && \
-    git clone https://github.com/keelworks/keelworks-chatbot-api /app
+RUN git clone https://github.com/keelworks/keelworks-chatbot-api /app
 
 # Install Python dependencies from the cloned repository
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Generate chatbot model pickle file from root directory
-RUN python -m scripts.save_model
+RUN python3 -m scripts.save_model
 
 # Expose the ports used by FastAPI and MySQL
 EXPOSE 8000 3306
