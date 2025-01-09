@@ -6,8 +6,14 @@ WORKDIR /app
 
 # Install git so we can clone the repo
 RUN apt-get update && apt-get install -y git \
-    mysql-server \
-    && rm -rf /var/lib/apt/lists/*
+    wget \
+    gnupg \
+    lsb-release \
+    && wget https://dev.mysql.com/get/mysql-apt-config_0.8.26-1_all.deb \
+    && dpkg -i mysql-apt-config_0.8.26-1_all.deb \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends mysql-server \
+    && rm -rf /var/lib/apt/lists/* /mysql-apt-config_0.8.26-1_all.deb
 
 # Clone the FastAPI repository from GitHub
 RUN git clone https://github.com/keelworks/keelworks-chatbot-api /app
