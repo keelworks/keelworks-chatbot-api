@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Clone the FastAPI repository from GitHub
-RUN git clone https://github.com/keelworks/keelworks-chatbot-api /app
+RUN git clone --depth 1 https://github.com/keelworks/keelworks-chatbot-api /app
 
 # Install Python dependencies from the cloned repository
 RUN pip3 install --no-cache-dir -r requirements.txt
@@ -38,4 +38,4 @@ RUN service mysql start && \
     mysql -u root -e "CREATE DATABASE ${MYSQL_DATABASE};"
 
 # Command to start MySQL and run the FastAPI app
-CMD ["sh", "-c", "service mysql start && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
+CMD ["sh", "-c", "service mysql start && sleep 5 && alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
