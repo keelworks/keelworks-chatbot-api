@@ -37,7 +37,8 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    #url = config.get_main_option("sqlalchemy.url")
+    url = "mysql+aiomysql://root:@localhost/keelworks_chatbot_db"
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -56,9 +57,14 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    connectable = engine_from_config(
+    """connectable = engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
+        poolclass=pool.NullPool,
+    )"""
+
+    connectable = engine_from_config(
+        url = "mysql+aiomysql://root:@localhost/keelworks_chatbot_db",
         poolclass=pool.NullPool,
     )
 
