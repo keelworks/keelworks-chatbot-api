@@ -35,7 +35,12 @@ ENV MYSQL_DATABASE=keelworks_chatbot_db
 # Initialize MySQL and setup the database
 RUN service mysql start && \
     mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY '${MYSQL_PASSWORD}';" && \
-    mysql -u root -e "CREATE DATABASE ${MYSQL_DATABASE};"
+    mysql -u root -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};" && \
+    mysql ${MYSQL_DATABASE} -e "CREATE TABLE IF NOT EXISTS unanswered_questions ( \
+        id INT AUTO_INCREMENT PRIMARY KEY, \
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP, \
+        question VARCHAR(255) NOT NULL \
+    );"
 
 # Command to start MySQL and run the FastAPI app
-CMD ["sh", "-c", "service mysql start && sleep 5 && alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
+CMD ["sh", "-c", "service mysql start && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
