@@ -8,7 +8,14 @@ WORKDIR /app
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Install prerequisites and MySQL server
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     python3 \
+#     python3-pip \
+#     git \
+#     mysql-server \
+#     && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get install -y --no-install-recommends \
     python3 \
     python3-pip \
     git \
